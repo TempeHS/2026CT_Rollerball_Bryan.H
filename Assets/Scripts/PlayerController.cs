@@ -1,30 +1,49 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
 
  private Rigidbody rb; 
+
+
  private int count;
+
+
  private float movementX;
  private float movementY;
 
- 
- public float speed = 0; 
 
- 
+ public float speed = 0;
+
+
+ public TextMeshProUGUI countText;
+
+
+ public GameObject winTextObject;
+
+
  void Start()
     {
  
         rb = GetComponent<Rigidbody>();
-        count = 0; 
+
+
+        count = 0;
+
+
+        SetCountText();
+
+
+        winTextObject.SetActive(false);
     }
  
- 
+
  void OnMove(InputValue movementValue)
     {
- 
+
         Vector2 movementVector = movementValue.Get<Vector2>();
 
  
@@ -44,6 +63,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
+ 
  void OnTriggerEnter(Collider other) 
     {
 
@@ -51,8 +71,46 @@ public class PlayerController : MonoBehaviour
         {
 
             other.gameObject.SetActive(false);
+
+ 
             count = count + 1;
+
+ 
+            SetCountText();
         }
     }
+
+
+ void SetCountText() 
+    {
+
+        countText.text = "Count: " + count.ToString();
+
+ 
+ if (count >= 32)
+        {
+
+            winTextObject.SetActive(true);
+
+
+            Destroy(GameObject.FindGameObjectWithTag("Enemy"));
+        }
+    }
+
+private void OnCollisionEnter(Collision collision)
+{
+ if (collision.gameObject.CompareTag("Enemy"))
+    {
+
+        Destroy(gameObject); 
+ 
+ 
+        winTextObject.gameObject.SetActive(true);
+        winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+ 
+    }
+
+}
+
 
 }
