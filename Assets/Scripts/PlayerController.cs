@@ -68,14 +68,13 @@ public class PlayerController : MonoBehaviour
     {
 
  if (other.gameObject.CompareTag("PickUp")) 
+
         {
 
             other.gameObject.SetActive(false);
 
- 
             count = count + 1;
 
- 
             SetCountText();
         }
     }
@@ -106,7 +105,8 @@ private void OnCollisionEnter(Collision collision)
  
  
         winTextObject.gameObject.SetActive(true);
-        winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+        winTextObject.GetComponent<TextMeshProUGUI>().text = "You Suck!";
+
  
     }
 
