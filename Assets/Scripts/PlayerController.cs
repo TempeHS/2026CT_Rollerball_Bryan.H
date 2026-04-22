@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,7 +17,8 @@ public class PlayerController : MonoBehaviour
     public TextMeshProUGUI countText;
     public GameObject winTextObject;
 
-    private bool hasWon = false;   // <-- prevents destruction after winning
+
+    private bool hasWon = false;   
 
     void Start()
     {
@@ -35,7 +38,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (hasWon) return; // optional: stop movement after winning
+        if (hasWon) return; 
 
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
         rb.AddForce(movement * speed);
@@ -58,13 +61,17 @@ public class PlayerController : MonoBehaviour
         if (count >= 32)
         {
             winTextObject.SetActive(true);
-            hasWon = true;   // <-- player has won
+            hasWon = true;   
+            GameManager.instance.ShowRestartButton();
+
         }
     }
 
     private void OnCollisionEnter(Collision collision)
+
     {
-        if (hasWon) return;  // <-- ignore enemy collisions after winning
+        if (hasWon) return;  
+    
 
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -72,6 +79,11 @@ public class PlayerController : MonoBehaviour
 
             winTextObject.SetActive(true);
             winTextObject.GetComponent<TextMeshProUGUI>().text = "You Suck!";
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    
         }
+
     }
+    
+   
 }
